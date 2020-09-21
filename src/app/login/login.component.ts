@@ -57,22 +57,23 @@ export class LoginComponent implements OnInit {
       }
       console.log(this.loginService.isAdminUser(jwtToken));
       if (jwtToken) {
-        this.handlePostLogin(true,jwtToken);
+        this.handlePostLogin(true,jwtToken,email);
       } else {
-        this.handlePostLogin(false,jwtToken);
+        this.handlePostLogin(false,jwtToken,email);
       }
     });
   }
 
   
 
-  handlePostLogin(flag: boolean, jwtToken: String) {
+  handlePostLogin(flag: boolean, jwtToken: String,emailAddress:String) {
     console.log("Handling post login method " + flag);
     if (!flag) {
       this.errorMsg = "Login failed - Check the credentials";
       console.log("Login failed");
     } else {
       var isAdmin: boolean = this.loginService.isAdminUser(jwtToken);
+      localStorage.setItem("email",emailAddress.toString());
       this.errorMsg = null;
       if (isAdmin) {
         this.router.navigate(["admin-dashboard"]);

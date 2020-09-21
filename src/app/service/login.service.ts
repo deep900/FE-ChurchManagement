@@ -144,8 +144,8 @@ export class LoginService extends CommonService {
 
   checkLogin() {
     var jwtToken = localStorage.getItem("token");
-    if (jwtToken) {
-      return true;
+    if (jwtToken) {      
+      return true && !this.jwtHelper.isTokenExpired(jwtToken);
     } else {
       return false;
     }
@@ -157,15 +157,20 @@ export class LoginService extends CommonService {
       return false;
     }
     else{
-      return this.isAdminUser(jwtToken);
+      return !this.jwtHelper.isTokenExpired(jwtToken) && this.isAdminUser(jwtToken);
     }
+  }
+
+  isTokenExpired(){
+
   }
 
   isAdminUser(jwtToken: String): boolean {
     var result: any = this.parseJwtToken(jwtToken);
     if (result && result.ROLES) {
       console.log("Roles" + result.ROLES);
-      var adminUser = result.ROLES.split(",").indexOf("ROLE_ADMIN_USER") < 0;
+      var adminUser = result.ROLES.split(",").indexOf("ROLE_ADMIN_USER") >= 0;
+      console.log(adminUser);
       return adminUser;
     }
     return false;

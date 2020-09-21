@@ -18,6 +18,8 @@ import { AdminHomepageComponent } from "./admin-homepage/admin-homepage.componen
 import { ModalModule } from "./_modal/modal.module";
 import { AddEventComponent } from "./events/addEvent/add-event/add-event.component";
 import { NgbDate, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { EditTaskComponent } from './tasks/edit-task/edit-task.component';
+
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { NgbDate, NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HomepageComponent,
     DashboardComponent,
     AdminHomepageComponent,
-    AddEventComponent   
+    AddEventComponent,
+    EditTaskComponent   
   ],
   imports: [
     BrowserModule,

@@ -20,6 +20,10 @@ export class CommonService {
     this.router.navigate(["login"]);
   }
 
+  public getLoggedInUser():String{
+    return localStorage.getItem("email");
+  }
+
   public getAuthHeader() {
     var authHeader = localStorage.getItem("token");
     var sessionIdVar = localStorage.getItem("sessionId");

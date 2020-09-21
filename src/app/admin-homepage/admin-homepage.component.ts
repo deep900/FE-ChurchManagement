@@ -6,6 +6,7 @@ import { LoginService } from "../service/login.service";
 import { MyEvent } from "../interface/events/event";
 import { StringManipulationService } from "../service/string-manipulation.service";
 import { Reminder } from "../interface/events/Reminder";
+import { TasksComponent } from "../tasks/tasks.component";
 
 @Component({
   selector: "app-admin-homepage",
@@ -16,12 +17,24 @@ export class AdminHomepageComponent implements OnInit {
   eventList: MyEvent[];
   displayMsg: String;
   displayTitle: String;
+  currentPage = 1;
+  itemsPerPage = 5;
+  pageSize: number;
+
   constructor(
     private eventService: EventService,
     private modalService: ModalService,
     private loginService: LoginService,
     private stingModify: StringManipulationService
   ) {}
+
+  public onPageChange(pageNum: number): void {
+    this.pageSize = this.itemsPerPage * (pageNum - 1);
+  }
+
+  public changePagesize(num: number): void {
+    this.itemsPerPage = this.pageSize + num;
+  }
 
   ngOnInit() {
     this.loadAllEvents();

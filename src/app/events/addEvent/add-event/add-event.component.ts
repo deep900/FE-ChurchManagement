@@ -21,6 +21,7 @@ export class AddEventComponent extends CommonService {
   selectedReoccurance: String = "Yearly";
   selectedFrequency: String = "1";
   minDate = new Date();
+  myRouter: Router;
 
   eventobj: MyEvent;
   constructor(
@@ -29,6 +30,7 @@ export class AddEventComponent extends CommonService {
     router: Router
   ) {
     super(router);
+    this.myRouter = router;
   }
 
   addEventForm: FormGroup = this.fb.group({
@@ -41,9 +43,9 @@ export class AddEventComponent extends CommonService {
   });
 
   ngOnInit() {
+    this.prepareViewForAddEvent();
     this.initializeEventType();
     this.initOccuranceList();
-    this.prepareViewForAddEvent();
   }
 
   private prepareViewForAddEvent() {
@@ -89,12 +91,14 @@ export class AddEventComponent extends CommonService {
   getReOccurance() {
     var freqType = this.addEventForm.get("frequencyType").value;
     var numOfOcc = this.addEventForm.get("numberOfOccurance").value;
-    console.log('Frequency type ' + freqType + ", Number of occurance:" + numOfOcc);
+    console.log(
+      "Frequency type " + freqType + ", Number of occurance:" + numOfOcc
+    );
     return new ReOccurance(freqType, numOfOcc);
   }
 
   getReminder() {
-    var reminders:Reminder[] = [];
+    var reminders: Reminder[] = [];
     var reminderObj = new Reminder(1, this.getStartTime());
     reminders.push(reminderObj);
     return reminders;
@@ -140,8 +144,18 @@ export class AddEventComponent extends CommonService {
     this.eventobj.reOccurance = this.getReOccurance();
     this.eventobj.reminders = this.getReminder();
 
-    this.eventService.addNewEvent(this.eventobj).then((data) => {
-      console.log(data);
-    });
+    this.eventService
+      .addNewEvent(this.eventobj)
+      .then((data) => {
+        console.log(data);
+        this.routeToAdminHomePage();
+      })
+      .catch((error) => {
+        JSON.stringify(error);
+      });
+  }
+
+  private routeToAdminHomePage() {
+    this.myRouter.navigate(["admin-dashboard"]);
   }
 }
